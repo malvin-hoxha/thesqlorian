@@ -88,7 +88,7 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                 setQueryError("No rows returned.");
                 setIsCorrect(false);
             }
-        } catch (err) {
+        } catch {
             setUserResult([]);
             setQueryError("Invalid SQL query.");
             setIsCorrect(false);
