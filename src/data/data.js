@@ -27,9 +27,34 @@ SELECT column_name FROM table_name WHERE column_name < value;`,
 For example:
 SELECT * FROM table_name WHERE column_name <= value;`,
     resulted_table: [
-      { id: 7, name: "Kit Fisto", species: "Nautolan", age: 40, lightsaber_color: "Green" },
-      { id: 8, name: "Plo Koon", species: "Kel Dor", age: 50, lightsaber_color: "Orange" },
-      { id: 9, name: "Yaddle", species: "Yoda's Species", age: 477, lightsaber_color: "Green" }
+      {
+        id: 2,
+        name: "Grogu",
+        species: "Yoda's Species",
+        age: 50,
+        lightsaber_color: "None",
+      },
+      {
+        id: 7,
+        name: "Kit Fisto",
+        species: "Nautolan",
+        age: 40,
+        lightsaber_color: "Green",
+      },
+      {
+        id: 8,
+        name: "Plo Koon",
+        species: "Kel Dor",
+        age: 50,
+        lightsaber_color: "Orange",
+      },
+      {
+        id: 9,
+        name: "Yaddle",
+        species: "Yoda's Species",
+        age: 477,
+        lightsaber_color: "Green",
+      },
     ]
   },
   {
@@ -157,7 +182,7 @@ AVG returns the average.
 For example:
 SELECT AVG(column_name) FROM table_name;`,
     resulted_table: [
-      { average_age: 123.5 }
+      { average_age: 76.1 }
     ]
   },
   {
@@ -183,7 +208,7 @@ SELECT MAX(column_name) FROM table_name;`,
 For example:
 SELECT MIN(column_name) FROM table_name;`,
     resulted_table: [
-      { youngest: 20 }
+      { youngest: 15 }
     ]
   },
   {
@@ -196,7 +221,7 @@ SELECT MIN(column_name) FROM table_name;`,
 For example:
 SELECT SUM(column_name) FROM table_name;`,
     resulted_table: [
-      { total_age: 987 }
+      { total_age: 761 }
     ]
   },{
   id: 15,
@@ -209,11 +234,12 @@ For example:
 SELECT column_name FROM table_name WHERE column_name != 'value';`,
   resulted_table: [
     { name: "Ahsoka Tano" },
+    { name: "Grogu" },
+    { name: "Shaak Ti" },
     { name: "Kit Fisto" },
     { name: "Plo Koon" },
-    { name: "Shaak Ti" },
-    { name: "Eeth Koth" },
-    { name: "Yaddle" }
+    { name: "Yaddle" },
+    { name: "Eeth Koth" }
   ]
 },
 {
@@ -228,8 +254,8 @@ For example:
 SELECT column FROM table ORDER BY column DESC LIMIT number;`,
   resulted_table: [
     { name: "Yaddle" },
-    { name: "Plo Koon" },
-    { name: "Kit Fisto" }
+    { name: "Grogu" },
+    { name: "Plo Koon" }
   ]
 },
 {
@@ -256,12 +282,12 @@ COUNT(*) counts how many rows are in each group.
 For example:
 SELECT column, COUNT(*) FROM table GROUP BY column;`,
   resulted_table: [
-    { species: "Human", total: 1 },
-    { species: "Togruta", total: 2 },
-    { species: "Nautolan", total: 1 },
+    { species: "Human", total: 3 },
     { species: "Kel Dor", total: 1 },
-    { species: "Zabrak", total: 1 },
-    { species: "Yoda's Species", total: 1 }
+    { species: "Nautolan", total: 1 },
+    { species: "Togruta", total: 2 },
+    { species: "Yoda's Species", total: 2 },
+    { species: "Zabrak", total: 1 }
   ]
 },
 {
@@ -274,7 +300,7 @@ SELECT column, COUNT(*) FROM table GROUP BY column;`,
 For example:
 SELECT column_name FROM table_name WHERE column_name = 'None';`,
   resulted_table: [
-    { name: "Eeth Koth" }
+    { name: "Grogu" }
   ]
 }
 ];

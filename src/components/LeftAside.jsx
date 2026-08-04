@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import initSqlJs from 'sql.js';
-import padawans from '../data/table';
+import { createPadawansDatabase } from '../lib/sql/createPadawansDatabase';
 import data from '../data/data';
 const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameResetTrigger}) => {
 
     const [userSQLMap, setUserSQLMap] = useState({});
     const [isCorrect, setIsCorrect] = useState(null);
-    
+
     const [db, setDb] = useState(null);
     const [userSQL, setUserSQL] = useState("");
-    const [userResult, setUserResult] = useState([]); 
+    const [userResult, setUserResult] = useState([]);
     const [queryError, setQueryError] = useState("");
 
     useEffect(() => {
@@ -28,36 +28,18 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
     }, [gameResetTrigger]);
 
     useEffect(() => {
-        (async () => {
-          const SQL = await initSqlJs({ locateFile: file => `https://sql.js.org/dist/${file}` });
-          const dbInstance = new SQL.Database();
-          
-    
-          dbInstance.run(`
-            CREATE TABLE padawans (
-              id INTEGER,
-              name TEXT,
-              species TEXT,
-              age INTEGER,
-              lightsaber_color TEXT
-            );
-          `);
-    
-          padawans.forEach(p => {
-            dbInstance.run(
-              `INSERT INTO padawans (id, name, species, age, lightsaber_color) VALUES (?, ?, ?, ?, ?)`,
-              [p.id, p.name, p.species, p.age, p.lightsaber_color]
-            );
-          });
-    
-          setDb(dbInstance);
-        })();
-      }, []);
-    
+        async function initializeDatabase() {
+            const SQL = await initSqlJs({ locateFile: file => `https://sql.js.org/dist/${file}` });
+            const dbInstance = createPadawansDatabase(SQL);
+            setDb(dbInstance);
+        }
+        initializeDatabase();
+    },[]);
+
       const handleRunSQL = () => {
         try {
             const result = db.exec(userSQL);
-    
+
             if (result.length > 0) {
                 const { columns, values } = result[0];
                 const formatted = values.map(row =>
@@ -65,17 +47,17 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                 );
                 setUserResult(formatted);
                 setQueryError("");
-    
+
                 const expected = db.exec(tasks.expected_sql);
                 let expectedFormatted = [];
-    
+
                 if (expected.length > 0) {
                     const { columns: expCols, values: expVals } = expected[0];
                     expectedFormatted = expVals.map(row =>
                         Object.fromEntries(row.map((val, i) => [expCols[i], val]))
                     );
                 }
-    
+
                 const isSameResult = JSON.stringify(formatted) === JSON.stringify(expectedFormatted);
                 setIsCorrect(isSameResult);
                 if (isSameResult && tableIndex === data.length - 1) {
@@ -94,7 +76,7 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
             setIsCorrect(false);
         }
     };
-    
+
 
     return (
         <>
@@ -106,11 +88,11 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                     setUserSQL(val);
                     setUserSQLMap(prev => ({ ...prev, [tableIndex]: val }));
             }}
-                className="w-full h-40 p-4 rounded-lg bg-zinc-700 text-white border border-zinc-600 focus:outline-none 
+                className="w-full h-40 p-4 rounded-lg bg-zinc-700 text-white border border-zinc-600 focus:outline-none
                     focus:ring-2 focus:ring-amber-400"
                 placeholder="Enter your SQL command..."
             />
-            
+
             <div className='flex items-center sm:gap-4 gap-2'>
                 <button
                     onClick={handleRunSQL}
@@ -121,8 +103,8 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                 <button
                     disabled={!isCorrect}
                     onClick={() => ChangePage('next')}
-                    className={`px-5 py-2  text-white font-semibold rounded-xl shadow-lg 
-                        transition-all duration-200  
+                    className={`px-5 py-2  text-white font-semibold rounded-xl shadow-lg
+                        transition-all duration-200
                         ${!isCorrect ? 'bg-red-900 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 cursor-pointer'} `}
                 >
                     Next
@@ -136,7 +118,7 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                     Previous
                 </button>
             </div>
-            
+
 
             <div className="my-5">
                 <pre className="p-4 text-amber-200 text-start text-base bg-zinc-800 rounded-lg border border-zinc-600 whitespace-pre-wrap">
@@ -154,7 +136,7 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
             </div>
 
             {queryError && <p className="text-red-400 italic">{queryError}</p>}
-            
+
             {userResult.length > 0 && (
                 <div className="mt-6">
                     <h2 className="text-xl font-semibold text-amber-400 mb-2">Your Query Result</h2>
