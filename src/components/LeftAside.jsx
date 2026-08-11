@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import initSqlJs from 'sql.js';
-import { createPadawansDatabase } from '../lib/sql/createPadawansDatabase';
+
 import data from '../data/data';
+import { validateSqlStatement } from "../lib/sql/validateSqlStatement.js";
+import { evaluateQuery } from "../lib/sql/evaluateQuery.js";
+
+
 const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameResetTrigger}) => {
 
     const [userSQLMap, setUserSQLMap] = useState({});
     const [isCorrect, setIsCorrect] = useState(null);
 
-    const [db, setDb] = useState(null);
+    const [sqlModule, setSqlModule] = useState(null);
     const [userSQL, setUserSQL] = useState("");
     const [userResult, setUserResult] = useState([]);
     const [queryError, setQueryError] = useState("");
@@ -28,47 +32,55 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
     }, [gameResetTrigger]);
 
     useEffect(() => {
-        async function initializeDatabase() {
+        async function initializeSqlModule() {
             const SQL = await initSqlJs({ locateFile: file => `https://sql.js.org/dist/${file}` });
-            const dbInstance = createPadawansDatabase(SQL);
-            setDb(dbInstance);
+            setSqlModule(SQL);
         }
-        initializeDatabase();
+        initializeSqlModule();
     },[]);
 
       const handleRunSQL = () => {
         try {
-            const result = db.exec(userSQL);
 
-            if (result.length > 0) {
-                const { columns, values } = result[0];
-                const formatted = values.map(row =>
-                    Object.fromEntries(row.map((val, i) => [columns[i], val]))
-                );
-                setUserResult(formatted);
-                setQueryError("");
+            const statementValidation = validateSqlStatement(userSQL);
 
-                const expected = db.exec(tasks.expected_sql);
-                let expectedFormatted = [];
-
-                if (expected.length > 0) {
-                    const { columns: expCols, values: expVals } = expected[0];
-                    expectedFormatted = expVals.map(row =>
-                        Object.fromEntries(row.map((val, i) => [expCols[i], val]))
-                    );
-                }
-
-                const isSameResult = JSON.stringify(formatted) === JSON.stringify(expectedFormatted);
-                setIsCorrect(isSameResult);
-                if (isSameResult && tableIndex === data.length - 1) {
-                    setTimeout(() => {
-                        onCompleteLastTask();
-                    }, 1500);
-                }
-            } else {
+            if(!statementValidation.valid) {
+                setQueryError(statementValidation.error);
                 setUserResult([]);
-                setQueryError("No rows returned.");
                 setIsCorrect(false);
+                return;
+            }
+
+            if (!sqlModule) {
+                setQueryError("SQL engine is still loading.");
+                setUserResult([]);
+                setIsCorrect(false);
+                return;
+            }
+
+            const evaluation = evaluateQuery({
+                SQL: sqlModule,
+                userSql: userSQL,
+                expectedSql: tasks.expected_sql,
+                orderSensitive: tasks.orderSensitive ?? false,
+                columnNamesSensitive: false
+            });
+
+            if (evaluation.actualRows.length === 0) {
+                setUserResult([]);
+                setQueryError("No rows returned");
+                setIsCorrect(false);
+                return;
+            }
+
+            setUserResult(evaluation.actualRows);
+            setQueryError("");
+            setIsCorrect(evaluation.correct);
+
+            if (evaluation.correct && tableIndex === data.length - 1) {
+                setTimeout(() => {
+                    onCompleteLastTask();
+                }, 1500);
             }
         } catch {
             setUserResult([]);

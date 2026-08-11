@@ -5,6 +5,7 @@ import initSqlJs from "sql.js";
 
 import challenges from "./data.js";
 import { createPadawansDatabase } from "../lib/sql/createPadawansDatabase.js";
+import { formatSqlResult } from "../lib/sql/formatSqlResult.js";
 
 const require = createRequire(import.meta.url);
 const wasmPath = require.resolve("sql.js/dist/sql-wasm.wasm");
@@ -12,20 +13,6 @@ const wasmPath = require.resolve("sql.js/dist/sql-wasm.wasm");
 const SQL = await initSqlJs({
   wasmBinary: await readFile(wasmPath),
 });
-
-function formatSqlResult(result) {
-  if (result.length === 0) {
-    return [];
-  }
-
-  const { columns, values } = result[0];
-
-  return values.map((row) =>
-    Object.fromEntries(
-      row.map((value, index) => [columns[index], value]),
-    ),
-  );
-}
 
 describe("Challenge data integrity", () => {
   it("uses a unique id for every challenge", () => {

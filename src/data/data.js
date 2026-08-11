@@ -5,14 +5,14 @@ const data = [
     table: "padawans",
     expected_sql: "SELECT name FROM padawans WHERE age > 100;",
     example_sql: `SQL accepts various inequality symbols, including:
-= "equal to"
-> "greater than"
-< "less than"
->= "greater than or equal to"
-<= "less than or equal to"
+      = "equal to"
+      > "greater than"
+      < "less than"
+      >= "greater than or equal to"
+      <= "less than or equal to"
 
-For example:
-SELECT column_name FROM table_name WHERE column_name < value;`,
+      For example:
+      SELECT column_name FROM table_name WHERE column_name < value;`,
     resulted_table: [
       { name: "Yaddle" }
     ]
@@ -24,8 +24,8 @@ SELECT column_name FROM table_name WHERE column_name < value;`,
     expected_sql: "SELECT * FROM padawans WHERE age >= 40;",
     example_sql: `SQL allows you to filter records based on conditions using inequality symbols.
 
-For example:
-SELECT * FROM table_name WHERE column_name <= value;`,
+      For example:
+      SELECT * FROM table_name WHERE column_name <= value;`,
     resulted_table: [
       {
         id: 2,
@@ -64,8 +64,8 @@ SELECT * FROM table_name WHERE column_name <= value;`,
     expected_sql: "SELECT name FROM padawans WHERE lightsaber_color = 'Green' AND species = 'Human';",
     example_sql: `You can combine multiple conditions using the AND keyword.
 
-For example:
-SELECT column_name FROM table_name WHERE condition1 AND condition2;`,
+      For example:
+      SELECT column_name FROM table_name WHERE condition1 AND condition2;`,
     resulted_table: [
       { name: "Luke Skywalker" }
     ]
@@ -77,8 +77,8 @@ SELECT column_name FROM table_name WHERE condition1 AND condition2;`,
     expected_sql: "SELECT name FROM padawans WHERE species = 'Togruta' OR species = 'Zabrak';",
     example_sql: `In the WHERE part of a query, you can search for rows that match any of multiple attributes by using the OR keyword.
 
-For example:
-SELECT column_name FROM table_name WHERE condition1 OR condition2;`,
+      For example:
+      SELECT column_name FROM table_name WHERE condition1 OR condition2;`,
     resulted_table: [
       { name: "Ahsoka Tano" },
       { name: "Shaak Ti" },
@@ -92,8 +92,8 @@ SELECT column_name FROM table_name WHERE condition1 OR condition2;`,
     expected_sql: "SELECT name FROM padawans WHERE species IN ('Togruta', 'Nautolan', 'Kel Dor');",
     example_sql: `Using the WHERE clause, you can find rows where a value is in a list of several possible values.
 
-For example:
-SELECT column_name FROM table_name WHERE column_name IN (value1, value2, value3);`,
+      For example:
+      SELECT column_name FROM table_name WHERE column_name IN (value1, value2, value3);`,
     resulted_table: [
       { name: "Ahsoka Tano" },
       { name: "Shaak Ti" },
@@ -108,8 +108,8 @@ SELECT column_name FROM table_name WHERE column_name IN (value1, value2, value3)
     expected_sql: "SELECT DISTINCT lightsaber_color FROM padawans;",
     example_sql: `By putting DISTINCT after SELECT, you prevent duplicates in the results.
 
-For example:
-SELECT DISTINCT column_name FROM table_name;`,
+      For example:
+      SELECT DISTINCT column_name FROM table_name;`,
     resulted_table: [
       { lightsaber_color: "Green" },
       { lightsaber_color: "None" },
@@ -124,10 +124,10 @@ SELECT DISTINCT column_name FROM table_name;`,
     table: "padawans",
     expected_sql: "SELECT name FROM padawans WHERE name LIKE 'Lu%';",
     example_sql: `LIKE lets you match patterns in text.
-Use % as a wildcard for any sequence of characters.
+      Use % as a wildcard for any sequence of characters.
 
-For example:
-SELECT column_name FROM table_name WHERE column_name LIKE 'prefix%';`,
+      For example:
+      SELECT column_name FROM table_name WHERE column_name LIKE 'prefix%';`,
     resulted_table: [
       { name: "Luke Skywalker" }
     ]
@@ -139,8 +139,8 @@ SELECT column_name FROM table_name WHERE column_name LIKE 'prefix%';`,
     expected_sql: "SELECT name FROM padawans WHERE name LIKE '%Ti';",
     example_sql: `Use % in LIKE to match any ending or beginning.
 
-For example:
-SELECT column_name FROM table_name WHERE column_name LIKE '%suffix';`,
+      For example:
+      SELECT column_name FROM table_name WHERE column_name LIKE '%suffix';`,
     resulted_table: [
       { name: "Shaak Ti" }
     ]
@@ -152,8 +152,8 @@ SELECT column_name FROM table_name WHERE column_name LIKE '%suffix';`,
     expected_sql: "SELECT name FROM padawans WHERE name LIKE 'A_soka Tano';",
     example_sql: `The underscore _ matches exactly one character in LIKE patterns.
 
-For example:
-SELECT column_name FROM table_name WHERE column_name LIKE 'A_c%';`,
+      For example:
+      SELECT column_name FROM table_name WHERE column_name LIKE 'A_c%';`,
     resulted_table: [
       { name: "Ahsoka Tano" }
     ]
@@ -165,8 +165,8 @@ SELECT column_name FROM table_name WHERE column_name LIKE 'A_c%';`,
     expected_sql: "SELECT name FROM padawans WHERE name LIKE '_i_ Fisto';",
     example_sql: `The _ symbol matches exactly one character, no more, no less.
 
-For example:
-SELECT column_name FROM table_name WHERE column_name LIKE '_a_';`,
+      For example:
+      SELECT column_name FROM table_name WHERE column_name LIKE '_a_';`,
     resulted_table: [
       { name: "Kit Fisto" }
     ]
@@ -177,10 +177,10 @@ SELECT column_name FROM table_name WHERE column_name LIKE '_a_';`,
     table: "padawans",
     expected_sql: "SELECT AVG(age) AS average_age FROM padawans;",
     example_sql: `Aggregate functions calculate values from multiple rows.
-AVG returns the average.
+      AVG returns the average.
 
-For example:
-SELECT AVG(column_name) FROM table_name;`,
+      For example:
+      SELECT AVG(column_name) FROM table_name;`,
     resulted_table: [
       { average_age: 76.1 }
     ]
@@ -192,8 +192,8 @@ SELECT AVG(column_name) FROM table_name;`,
     expected_sql: "SELECT MAX(age) AS oldest FROM padawans;",
     example_sql: `MAX returns the largest value in a column.
 
-For example:
-SELECT MAX(column_name) FROM table_name;`,
+      For example:
+      SELECT MAX(column_name) FROM table_name;`,
     resulted_table: [
       { oldest: 477 }
     ]
@@ -205,8 +205,8 @@ SELECT MAX(column_name) FROM table_name;`,
     expected_sql: "SELECT MIN(age) AS youngest FROM padawans;",
     example_sql: `MIN returns the smallest value in a column.
 
-For example:
-SELECT MIN(column_name) FROM table_name;`,
+      For example:
+      SELECT MIN(column_name) FROM table_name;`,
     resulted_table: [
       { youngest: 15 }
     ]
@@ -218,8 +218,8 @@ SELECT MIN(column_name) FROM table_name;`,
     expected_sql: "SELECT SUM(age) AS total_age FROM padawans;",
     example_sql: `SUM adds all values in a numeric column.
 
-For example:
-SELECT SUM(column_name) FROM table_name;`,
+      For example:
+      SELECT SUM(column_name) FROM table_name;`,
     resulted_table: [
       { total_age: 761 }
     ]
@@ -230,8 +230,8 @@ SELECT SUM(column_name) FROM table_name;`,
   expected_sql: "SELECT name FROM padawans WHERE species != 'Human';",
   example_sql: `The != operator means "not equal to" in SQL.
 
-For example:
-SELECT column_name FROM table_name WHERE column_name != 'value';`,
+    For example:
+    SELECT column_name FROM table_name WHERE column_name != 'value';`,
   resulted_table: [
     { name: "Ahsoka Tano" },
     { name: "Grogu" },
@@ -248,10 +248,11 @@ SELECT column_name FROM table_name WHERE column_name != 'value';`,
   table: "padawans",
   expected_sql: "SELECT name FROM padawans ORDER BY age DESC LIMIT 3;",
   example_sql: `ORDER BY lets you sort rows. Use DESC for descending, ASC for ascending.
-LIMIT restricts how many rows you get.
+    LIMIT restricts how many rows you get.
 
-For example:
-SELECT column FROM table ORDER BY column DESC LIMIT number;`,
+    For example:
+    SELECT column FROM table ORDER BY column DESC LIMIT number;`,
+  orderSensitive: true,
   resulted_table: [
     { name: "Yaddle" },
     { name: "Grogu" },
@@ -265,8 +266,8 @@ SELECT column FROM table ORDER BY column DESC LIMIT number;`,
   expected_sql: "SELECT name FROM padawans WHERE name LIKE '%Sky%';",
   example_sql: `Use % with LIKE to search anywhere in a string.
 
-For example:
-SELECT column_name FROM table_name WHERE column_name LIKE '%part%';`,
+    For example:
+    SELECT column_name FROM table_name WHERE column_name LIKE '%part%';`,
   resulted_table: [
     { name: "Luke Skywalker" }
   ]
@@ -277,10 +278,10 @@ SELECT column_name FROM table_name WHERE column_name LIKE '%part%';`,
   table: "padawans",
   expected_sql: "SELECT species, COUNT(*) AS total FROM padawans GROUP BY species;",
   example_sql: `GROUP BY lets you group rows by a column.
-COUNT(*) counts how many rows are in each group.
+    COUNT(*) counts how many rows are in each group.
 
-For example:
-SELECT column, COUNT(*) FROM table GROUP BY column;`,
+    For example:
+    SELECT column, COUNT(*) FROM table GROUP BY column;`,
   resulted_table: [
     { species: "Human", total: 3 },
     { species: "Kel Dor", total: 1 },
@@ -297,8 +298,8 @@ SELECT column, COUNT(*) FROM table GROUP BY column;`,
   expected_sql: "SELECT name FROM padawans WHERE lightsaber_color = 'None';",
   example_sql: `You can check for specific values, even if they mean absence.
 
-For example:
-SELECT column_name FROM table_name WHERE column_name = 'None';`,
+    For example:
+    SELECT column_name FROM table_name WHERE column_name = 'None';`,
   resulted_table: [
     { name: "Grogu" }
   ]
