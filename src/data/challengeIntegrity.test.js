@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import initSqlJs from "sql.js";
 
 import challenges from "./data.js";
-import { createPadawansDatabase } from "../lib/sql/createPadawansDatabase.js";
+import { createNovatesDatabase } from "../lib/sql/createNovatesDatabase.js";
 import { formatSqlResult } from "../lib/sql/formatSqlResult.js";
 
 const require = createRequire(import.meta.url);
@@ -33,7 +33,7 @@ describe("Challenge data integrity", () => {
   it.each(challenges)(
     "challenge $id displays the result returned by its reference query",
     (challenge) => {
-      const database = createPadawansDatabase(SQL);
+      const database = createNovatesDatabase(SQL);
 
       try {
         const result = database.exec(challenge.expected_sql);

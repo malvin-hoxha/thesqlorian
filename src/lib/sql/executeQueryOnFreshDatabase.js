@@ -1,8 +1,8 @@
-import { createPadawansDatabase } from "./createPadawansDatabase.js";
+import { createNovatesDatabase } from "./createNovatesDatabase.js";
 import { formatSqlResult } from "./formatSqlResult.js";
 
 export function executeQueryOnFreshDatabase( SQL, sql, rows, ) {
-    const database = createPadawansDatabase(SQL, rows);
+    const database = createNovatesDatabase(SQL, rows);
 
     try {
         const resultSets = database.exec(sql);

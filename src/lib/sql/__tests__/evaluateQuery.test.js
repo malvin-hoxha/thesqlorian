@@ -25,17 +25,17 @@ beforeAll(async () => {
 const rows = [
   {
     id: 1,
-    name: "Ahsoka",
-    species: "Togruta",
-    age: 17,
-    lightsaber_color: "Green",
+    name: "Nera",
+    species: "Human",
+    age: 19,
+    resonance_color: "Cyan",
   },
   {
     id: 2,
-    name: "Yoda",
-    species: "Unknown",
-    age: 900,
-    lightsaber_color: "Green",
+    name: "Praxen",
+    species: "Selyx",
+    age: 203,
+    resonance_color: "Cyan",
   },
 ];
 
@@ -44,9 +44,9 @@ describe("evaluateQuery", () => {
     const evaluation = evaluateQuery({
       SQL,
       userSql:
-        "SELECT name FROM padawans WHERE age > 100;",
+        "SELECT name FROM novates WHERE age > 100;",
       expectedSql:
-        "SELECT name FROM padawans WHERE age > 100;",
+        "SELECT name FROM novates WHERE age > 100;",
       rows,
     });
 
@@ -54,7 +54,7 @@ describe("evaluateQuery", () => {
 
     expect(evaluation.actualRows).toEqual([
       {
-        name: "Yoda",
+        name: "Praxen",
       },
     ]);
   });
@@ -63,9 +63,9 @@ describe("evaluateQuery", () => {
     const evaluation = evaluateQuery({
       SQL,
       userSql:
-        "SELECT name FROM padawans WHERE age < 100;",
+        "SELECT name FROM novates WHERE age < 100;",
       expectedSql:
-        "SELECT name FROM padawans WHERE age > 100;",
+        "SELECT name FROM novates WHERE age > 100;",
       rows,
     });
 
@@ -76,9 +76,9 @@ describe("evaluateQuery", () => {
     const evaluation = evaluateQuery({
       SQL,
       userSql:
-        "SELECT name AS padawan_name FROM padawans WHERE age > 100;",
+        "SELECT name AS novate_name FROM novates WHERE age > 100;",
       expectedSql:
-        "SELECT name FROM padawans WHERE age > 100;",
+        "SELECT name FROM novates WHERE age > 100;",
       rows,
       columnNamesSensitive: false,
     });
@@ -90,25 +90,25 @@ describe("evaluateQuery", () => {
     const hiddenRows = [
       {
         id: 1,
-        name: "Ahsoka",
-        species: "Togruta",
-        age: 250,
-        lightsaber_color: "Green",
+        name: "Nera",
+        species: "Human",
+        age: 150,
+        resonance_color: "Cyan",
       },
       {
         id: 2,
-        name: "Yoda",
-        species: "Unknown",
+        name: "Praxen",
+        species: "Selyx",
         age: 20,
-        lightsaber_color: "Green",
+        resonance_color: "Cyan",
       },
     ];
 
     const evaluation = evaluateQuery({
       SQL,
-      userSql: "SELECT 'Yoda' AS name;",
+      userSql: "SELECT 'Praxen' AS name;",
       expectedSql:
-        "SELECT name FROM padawans WHERE age > 100;",
+        "SELECT name FROM novates WHERE age > 100;",
       rows,
       hiddenDatasets: [hiddenRows],
       columnNamesSensitive: false,
@@ -121,26 +121,26 @@ describe("evaluateQuery", () => {
     const hiddenRows = [
       {
         id: 1,
-        name: "Ahsoka",
-        species: "Togruta",
-        age: 250,
-        lightsaber_color: "Green",
+        name: "Nera",
+        species: "Human",
+        age: 150,
+        resonance_color: "Cyan",
       },
       {
         id: 2,
-        name: "Yoda",
-        species: "Unknown",
+        name: "Praxen",
+        species: "Selyx",
         age: 20,
-        lightsaber_color: "Green",
+        resonance_color: "Cyan",
       },
     ];
 
     const evaluation = evaluateQuery({
       SQL,
       userSql:
-        "SELECT name FROM padawans WHERE age > 100;",
+        "SELECT name FROM novates WHERE age > 100;",
       expectedSql:
-        "SELECT name FROM padawans WHERE age > 100;",
+        "SELECT name FROM novates WHERE age > 100;",
       rows,
       hiddenDatasets: [hiddenRows],
       columnNamesSensitive: false,
@@ -153,26 +153,26 @@ describe("evaluateQuery", () => {
     const hiddenRows = [
       {
         id: 1,
-        name: "Ahsoka",
-        species: "Togruta",
-        age: 250,
-        lightsaber_color: "Green",
+        name: "Nera",
+        species: "Human",
+        age: 150,
+        resonance_color: "Cyan",
       },
       {
         id: 2,
-        name: "Yoda",
-        species: "Unknown",
+        name: "Praxen",
+        species: "Selyx",
         age: 20,
-        lightsaber_color: "Green",
+        resonance_color: "Cyan",
       },
     ];
 
     const evaluation = evaluateQuery({
       SQL,
       userSql:
-        "SELECT name FROM padawans WHERE age > 500;",
+        "SELECT name FROM novates WHERE age > 200;",
       expectedSql:
-        "SELECT name FROM padawans WHERE age > 100;",
+        "SELECT name FROM novates WHERE age > 100;",
       rows,
       hiddenDatasets: [hiddenRows],
       columnNamesSensitive: false,

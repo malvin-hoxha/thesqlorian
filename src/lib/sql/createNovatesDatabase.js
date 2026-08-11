@@ -1,36 +1,36 @@
 import padawans from "../../data/table.js";
 
-export function createPadawansDatabase(SQL, rows = padawans) {
+export function createNovatesDatabase(SQL, rows = padawans) {
   const database = new SQL.Database();
 
   database.run(`
-    CREATE TABLE padawans (
-      id INTEGER,
+    CREATE TABLE novates (
+      id INTEGER PRIMARY KEY,
       name TEXT,
       species TEXT,
       age INTEGER,
-      lightsaber_color TEXT
+      resonance_color TEXT
     );
   `);
 
-  rows.forEach((padawan) => {
+  rows.forEach((novate) => {
     database.run(
       `
-        INSERT INTO padawans (
+        INSERT INTO novates (
           id,
           name,
           species,
           age,
-          lightsaber_color
+          resonance_color
         )
         VALUES (?, ?, ?, ?, ?);
       `,
       [
-        padawan.id,
-        padawan.name,
-        padawan.species,
-        padawan.age,
-        padawan.lightsaber_color,
+        novate.id,
+        novate.name,
+        novate.species,
+        novate.age,
+        novate.resonance_color,
       ],
     );
   });

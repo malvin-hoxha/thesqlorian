@@ -8,20 +8,20 @@ describe("formatSqlResult", () => {
       {
         columns: ["name", "age"],
         values: [
-          ["Yoda", 900],
-          ["Grogu", 50],
+          ["Nera", 19],
+          ["Praxen", 203],
         ],
       },
     ];
 
     expect(formatSqlResult(sqlResult)).toEqual([
       {
-        name: "Yoda",
-        age: 900,
+        name: "Nera",
+        age: 19,
       },
       {
-        name: "Grogu",
-        age: 50,
+        name: "Praxen",
+        age: 203,
       },
     ]);
   });

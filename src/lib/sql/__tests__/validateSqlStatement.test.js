@@ -5,7 +5,7 @@ import { validateSqlStatement } from "../validateSqlStatement.js";
 describe("validateSqlStatement", () => {
   it("accepts an uppercase SELECT query", () => {
     const result = validateSqlStatement(
-      "SELECT name FROM padawans;",
+      "SELECT name FROM novates;",
     );
 
     expect(result).toEqual({
@@ -16,7 +16,7 @@ describe("validateSqlStatement", () => {
 
   it("accepts a lowercase SELECT query", () => {
     const result = validateSqlStatement(
-      "select name from padawans;",
+      "select name from novates;",
     );
 
     expect(result.valid).toBe(true);
@@ -24,7 +24,7 @@ describe("validateSqlStatement", () => {
 
   it("accepts leading and trailing whitespace", () => {
     const result = validateSqlStatement(
-      "   SELECT name FROM padawans;   ",
+      "   SELECT name FROM novates;   ",
     );
 
     expect(result.valid).toBe(true);
@@ -41,7 +41,7 @@ describe("validateSqlStatement", () => {
 
   it("rejects a non-SELECT query", () => {
     const result = validateSqlStatement(
-      "DELETE FROM padawans;",
+      "DELETE FROM novates;",
     );
 
     expect(result).toEqual({
@@ -52,7 +52,7 @@ describe("validateSqlStatement", () => {
 
   it("rejects multiple SQL statements", () => {
     const result = validateSqlStatement(
-      "SELECT name FROM padawans; DROP TABLE padawans;",
+      "SELECT name FROM novates; DROP TABLE novates;",
     );
 
     expect(result).toEqual({
@@ -96,7 +96,7 @@ describe("validateSqlStatement", () => {
 
   it("allows a trailing SQL line comment after the statement", () => {
     const result = validateSqlStatement(
-      "SELECT name FROM padawans; -- get all names",
+      "SELECT name FROM novates; -- get all names",
     );
 
     expect(result).toEqual({
@@ -107,7 +107,7 @@ describe("validateSqlStatement", () => {
 
   it("ignores semicolons inside a SQL line comment", () => {
     const result = validateSqlStatement(
-      "SELECT name FROM padawans -- ; not another statement",
+      "SELECT name FROM novates -- ; not another statement",
     );
 
     expect(result).toEqual({
@@ -118,7 +118,7 @@ describe("validateSqlStatement", () => {
 
   it("allows a trailing SQL block comment after the statement", () => {
     const result = validateSqlStatement(
-      "SELECT name FROM padawans; /* get all names */",
+      "SELECT name FROM novates; /* get all names */",
     );
 
     expect(result).toEqual({
@@ -129,7 +129,7 @@ describe("validateSqlStatement", () => {
 
   it("ignores semicolons inside a SQL block comment", () => {
     const result = validateSqlStatement(
-      "SELECT name FROM padawans /* ; not another statement */;",
+      "SELECT name FROM novates /* ; not another statement */;",
     );
 
     expect(result).toEqual({
