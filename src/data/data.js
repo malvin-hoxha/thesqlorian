@@ -1,7 +1,7 @@
 const data = [
   {
     id: 1,
-    hint: "Wise, the elders are. Older than 100, find them you must.",
+    hint: "Some Novates have lived beyond a century. Retrieve their names.",
     table: "novates",
     expected_sql: "SELECT name FROM novates WHERE age > 100;",
     example_sql: `SQL accepts various inequality symbols, including:
@@ -20,7 +20,7 @@ const data = [
   },
   {
     id: 2,
-    hint: "Masters, 40 years or more, they must be.",
+    hint: "The Institute classifies Novates aged 40 or older as senior members. Retrieve their records.",
     table: "novates",
     expected_sql: "SELECT * FROM novates WHERE age >= 40;",
     example_sql: `SQL allows you to filter records based on conditions using inequality symbols.
@@ -81,7 +81,7 @@ const data = [
   },
   {
     id: 3,
-    hint: "Green blade, and Human — rare, that is.",
+    hint: "Find the Human Novate whose resonance color is Cyan.",
     table: "novates",
     expected_sql: "SELECT name FROM novates WHERE resonance_color = 'Cyan' AND species = 'Human';",
     example_sql: `You can combine multiple conditions using the AND keyword.
@@ -94,7 +94,7 @@ const data = [
   },
   {
     id: 4,
-    hint: "Togruta or Zabrak — allies from distant worlds.",
+    hint: "Retrieve every Novate from either the Avren or Myrin species.",
     table: "novates",
     expected_sql: "SELECT name FROM novates WHERE species = 'Avren' OR species = 'Myrin';",
     example_sql: `In the WHERE part of a query, you can search for rows that match any of multiple attributes by using the OR keyword.
@@ -110,7 +110,7 @@ const data = [
   },
   {
     id: 5,
-    hint: "From many species they come — Togruta, Nautolan, Kel Dor.",
+    hint: "Search the Lattice for Novates from the Avren, Tavri, or Orren species.",
     table: "novates",
     expected_sql: "SELECT name FROM novates WHERE species IN ('Avren', 'Tavri', 'Orren');",
     example_sql: `Using the WHERE clause, you can find rows where a value is in a list of several possible values.
@@ -126,7 +126,7 @@ const data = [
   },
   {
     id: 6,
-    hint: "Different, the lightsaber colors are. List them, you must.",
+    hint: "The archive contains repeated resonance colors. List each color only once.",
     table: "novates",
     expected_sql: "SELECT DISTINCT resonance_color FROM novates;",
     example_sql: `By putting DISTINCT after SELECT, you prevent duplicates in the results.
@@ -143,7 +143,7 @@ const data = [
   },
   {
     id: 7,
-    hint: "Begins with 'Lu', the name must. Seek them, you will.",
+    hint: "Find every Novate whose name begins with 'Ne'.",
     table: "novates",
     expected_sql: "SELECT name FROM novates WHERE name LIKE 'Ne%';",
     example_sql: `LIKE lets you match patterns in text.
@@ -158,7 +158,7 @@ const data = [
   },
   {
     id: 8,
-    hint: "Ends with 'Ti', their names do. Find them, you must.",
+    hint: "Find every Novate whose name ends with 'ren'.",
     table: "novates",
     expected_sql: "SELECT name FROM novates WHERE name LIKE '%ren';",
     example_sql: `Use % in LIKE to match any ending or beginning.
@@ -172,7 +172,7 @@ const data = [
   },
   {
     id: 9,
-    hint: "Only one letter hidden, the name has. 'A_soka' it must match.",
+    hint: "Search for names matching the pattern 'Ne_a', where exactly one character may vary.",
     table: "novates",
     expected_sql: "SELECT name FROM novates WHERE name LIKE 'Ne_a';",
     example_sql: `The underscore _ matches exactly one character in LIKE patterns.
@@ -186,7 +186,7 @@ const data = [
   },
   {
     id: 10,
-    hint: "Mysterious is a name: '_i_ Fisto', it sounds.",
+    hint: "Find the Novate whose name matches the pattern '_ira'.",
     table: "novates",
     expected_sql: "SELECT name FROM novates WHERE name LIKE '_ira';",
     example_sql: `The _ symbol matches exactly one character, no more, no less.
@@ -199,7 +199,7 @@ const data = [
   },
   {
     id: 11,
-    hint: "The average age of Jedi learners, know it you must.",
+    hint: "Calculate the average age of all Novates.",
     table: "novates",
     expected_sql: "SELECT AVG(age) AS average_age FROM novates;",
     example_sql: `Aggregate functions calculate values from multiple rows.
@@ -213,7 +213,7 @@ const data = [
   },
   {
     id: 12,
-    hint: "The oldest, who is? Maximum age, find you shall.",
+    hint: "Find the highest age recorded in the Novate archive.",
     table: "novates",
     expected_sql: "SELECT MAX(age) AS oldest FROM novates;",
     example_sql: `MAX returns the largest value in a column.
@@ -226,7 +226,7 @@ const data = [
   },
   {
     id: 13,
-    hint: "The youngest Padawan, curious you are.",
+    hint: "Find the lowest age recorded in the Novate archive.",
     table: "novates",
     expected_sql: "SELECT MIN(age) AS youngest FROM novates;",
     example_sql: `MIN returns the smallest value in a column.
@@ -239,7 +239,7 @@ const data = [
   },
   {
     id: 14,
-    hint: "Total the ages, for strength in numbers there is.",
+    hint: "Calculate the combined age of all Novates.",
     table: "novates",
     expected_sql: "SELECT SUM(age) AS total_age FROM novates;",
     example_sql: `SUM adds all values in a numeric column.
@@ -251,7 +251,7 @@ const data = [
     ]
   },{
   id: 15,
-  hint: "Padawans not Human, reveal them you must.",
+  hint: "Retrieve every Novate who is not Human.",
   table: "novates",
   expected_sql: "SELECT name FROM novates WHERE species != 'Human';",
   example_sql: `The != operator means "not equal to" in SQL.
@@ -270,7 +270,7 @@ const data = [
 },
 {
   id: 16,
-  hint: "Top 3 oldest, ranked they are.",
+  hint: "Identify the three oldest Novates, ordered from oldest to youngest.",
   table: "novates",
   expected_sql: "SELECT name FROM novates ORDER BY age DESC LIMIT 3;",
   example_sql: `ORDER BY lets you sort rows. Use DESC for descending, ASC for ascending.
@@ -287,7 +287,7 @@ const data = [
 },
 {
   id: 17,
-  hint: "Names contain 'Sky', they do. Search within, you must.",
+  hint: "Find every Novate whose name contains 'ral'.",
   table: "novates",
   expected_sql: "SELECT name FROM novates WHERE name LIKE '%ral%';",
   example_sql: `Use % with LIKE to search anywhere in a string.
@@ -300,7 +300,7 @@ const data = [
 },
 {
   id: 18,
-  hint: "Species, group by them. Count, you will.",
+  hint: "Group the Novates by species and count how many belong to each group.",
   table: "novates",
   expected_sql: "SELECT species, COUNT(*) AS total FROM novates GROUP BY species;",
   example_sql: `GROUP BY lets you group rows by a column.
@@ -319,7 +319,7 @@ const data = [
 },
 {
   id: 19,
-  hint: "No lightsaber, some have. Reveal them, you will.",
+  hint: "Some Novates have no resonance color assigned. Retrieve their names.",
   table: "novates",
   expected_sql: "SELECT name FROM novates WHERE resonance_color = 'None';",
   example_sql: `You can check for specific values, even if they mean absence.
