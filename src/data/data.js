@@ -335,64 +335,64 @@ const data = [
 
 export const dialogues = [
   {
-    speaker: "vader",
-    text: "You are trapped in the SQL prison. You can't escape."
+    speaker: "merox",
+    text: "Access denied. You have entered a restricted layer of the Quiet Vault.",
   },
   {
-    speaker: "yoda",
-    text: "Simple, the path may not be. But impossible, it is not.",
+    speaker: "mnema",
+    text: "The Vault is sealed, but its records still answer to structured commands.",
   },
   {
-    speaker: "vader",
-    text: "The only way forward is through knowledge... of SQL.",
+    speaker: "merox",
+    text: "Every route out has been revoked. Your credentials are no longer recognized.",
   },
   {
-    speaker: "yoda",
-    text: "Strong in the database, one must be. Or trapped, one will stay.",
+    speaker: "mnema",
+    text: "Then we will build another route. Query the Lattice and recover what you need.",
   },
   {
-    speaker: "vader",
-    text: "Fail, and you will remain in my grasp forever. As others have before you.",
+    speaker: "merox",
+    text: "One incorrect command is all it takes to remain here indefinitely.",
   },
   {
-    speaker: "yoda",
-    text: "Believe in the code, young learner. The Force is with you.",
+    speaker: "mnema",
+    text: "Ignore the Custodian. Read the structure, reason through the data, and proceed carefully.",
   },
   {
-    speaker: "yoda",
-    text: "Your journey begins. Solve, you must, to be free.",
+    speaker: "mnema",
+    text: "Your first archive is open. Begin the query.",
   },
 ];
 
 export const outroDialogues = [
   {
-    speaker: "vader",
-    text: "Impossible... You broke through the queries. You escaped.",
+    speaker: "merox",
+    text: "That should not be possible. The Vault accepted your final query.",
   },
   {
-    speaker: "yoda",
-    text: "Through knowledge and code, free you are.",
+    speaker: "mnema",
+    text: "The records were never the barrier. Understanding them was.",
   },
   {
-    speaker: "vader",
-    text: "The data bends to your will. But know this... the dark side lurks in lazy joins.",
+    speaker: "merox",
+    text: "You restored access paths I erased from the Lattice.",
   },
   {
-    speaker: "yoda",
-    text: "Clever with clauses, precise with logic — a true master, you’ve become.",
+    speaker: "mnema",
+    text: "You learned to filter, compare, group, and extract what the archive tried to hide.",
   },
   {
-    speaker: "vader",
-    text: "This prison can hold you no longer. But the database... is endless.",
+    speaker: "merox",
+    text: "The Quiet Vault can no longer contain you.",
   },
   {
-    speaker: "yoda",
-    text: "Always more to learn, there is. But this challenge, conquered you have.",
+    speaker: "mnema",
+    text: "This archive is complete. Beyond it, the Lattice holds far more complex structures.",
   },
   {
-    speaker: "yoda",
-    text: "May the SQL be with you, always."
-  }
+    speaker: "mnema",
+    text: "Connection restored. Your next query is yours to choose.",
+  },
 ];
 
 
