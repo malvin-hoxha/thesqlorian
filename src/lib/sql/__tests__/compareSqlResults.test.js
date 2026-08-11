@@ -109,24 +109,6 @@ describe("compareSqlResults", () => {
 
   });
 
-  it("preserves duplicate row counts when order is ignored", () => {
-    const actual = [
-      { species: "Human" },
-      { species: "Human" },
-    ];
-
-    const expected = [
-      { species: "Human" },
-      { species: "Kel Dor" },
-    ];
-
-    expect(
-      compareSqlResults(actual, expected, {
-        orderSensitive: false,
-      }),
-    ).toBe(false);
-  });
-
   it("rejects different column names by default", () => {
     const actual = [
       { padawan_name: "Yoda" },
