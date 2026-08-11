@@ -49,4 +49,103 @@ describe("validateSqlStatement", () => {
       error: "Only SELECT queries are allowed.",
     });
   });
+
+  it("rejects multiple SQL statements", () => {
+    const result = validateSqlStatement(
+      "SELECT name FROM padawans; DROP TABLE padawans;",
+    );
+
+    expect(result).toEqual({
+      valid: false,
+      error: "Only one SQL statement is allowed.",
+    });
+  });
+
+  it("allows a semicolon inside a string literal", () => {
+    const result = validateSqlStatement(
+      "SELECT ';' AS symbol;",
+    );
+
+    expect(result).toEqual({
+      valid: true,
+      error: null,
+    });
+  });
+
+  it("allows escaped single quotes inside a string literal", () => {
+    const result = validateSqlStatement(
+      "SELECT 'It''s valid' AS text;",
+    );
+
+    expect(result).toEqual({
+      valid: true,
+      error: null,
+    });
+  });
+
+  it("allows a semicolon after an escaped quote inside a string literal", () => {
+    const result = validateSqlStatement(
+      "SELECT 'It''s; valid' AS text;",
+    );
+
+    expect(result).toEqual({
+      valid: true,
+      error: null,
+    });
+  });
+
+  it("allows a trailing SQL line comment after the statement", () => {
+    const result = validateSqlStatement(
+      "SELECT name FROM padawans; -- get all names",
+    );
+
+    expect(result).toEqual({
+      valid: true,
+      error: null,
+    });
+  });
+
+  it("ignores semicolons inside a SQL line comment", () => {
+    const result = validateSqlStatement(
+      "SELECT name FROM padawans -- ; not another statement",
+    );
+
+    expect(result).toEqual({
+      valid: true,
+      error: null,
+    });
+  });
+
+  it("allows a trailing SQL block comment after the statement", () => {
+    const result = validateSqlStatement(
+      "SELECT name FROM padawans; /* get all names */",
+    );
+
+    expect(result).toEqual({
+      valid: true,
+      error: null,
+    });
+  });
+
+  it("ignores semicolons inside a SQL block comment", () => {
+    const result = validateSqlStatement(
+      "SELECT name FROM padawans /* ; not another statement */;",
+    );
+
+    expect(result).toEqual({
+      valid: true,
+      error: null,
+    });
+  });
+
+  it("treats comment markers inside a string as normal text", () => {
+    const result = validateSqlStatement(
+      "SELECT '-- not a comment /* still text */' AS text;",
+    );
+
+    expect(result).toEqual({
+      valid: true,
+      error: null,
+    });
+  });
 });
