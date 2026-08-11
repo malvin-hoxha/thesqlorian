@@ -3,8 +3,7 @@ import initSqlJs from 'sql.js';
 
 import data from '../data/data';
 import { validateSqlStatement } from "../lib/sql/validateSqlStatement.js";
-import { compareSqlResults } from "../lib/sql/compareSqlResults.js";
-import { executeQueryOnFreshDatabase } from "../lib/sql/executeQueryOnFreshDatabase.js";
+import { evaluateQuery } from "../lib/sql/evaluateQuery.js";
 
 
 const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameResetTrigger}) => {
@@ -59,32 +58,29 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                 return;
             }
 
-            const formatted = executeQueryOnFreshDatabase( sqlModule, userSQL, );
+            const evaluation = evaluateQuery({
+                SQL: sqlModule,
+                userSql: userSQL,
+                expectedSql: tasks.expected_sql,
+                orderSensitive: tasks.orderSensitive ?? false,
+                columnNamesSensitive: false
+            });
 
-            if (formatted.length > 0) {
-                setUserResult(formatted);
-                setQueryError("");
-
-                const expectedFormatted = executeQueryOnFreshDatabase( sqlModule, tasks.expected_sql, );
-
-                const isSameResult = compareSqlResults( formatted, expectedFormatted,
-                    {
-                        orderSensitive: tasks.orderSensitive ?? false,
-                        columnNamesSensitive: false,
-                    },
-                );
-                
-                setIsCorrect(isSameResult);
-
-                if (isSameResult && tableIndex === data.length - 1) {
-                    setTimeout(() => {
-                        onCompleteLastTask();
-                    }, 1500);
-                }
-            } else {
+            if (evaluation.actualRows.length === 0) {
                 setUserResult([]);
-                setQueryError("No rows returned.");
+                setQueryError("No rows returned");
                 setIsCorrect(false);
+                return;
+            }
+
+            setUserResult(evaluation.actualRows);
+            setQueryError("");
+            setIsCorrect(evaluation.correct);
+
+            if (evaluation.correct && tableIndex === data.length - 1) {
+                setTimeout(() => {
+                    onCompleteLastTask();
+                }, 1500);
             }
         } catch {
             setUserResult([]);
