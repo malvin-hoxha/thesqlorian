@@ -12,7 +12,7 @@ html, body, #root {
 body {
     width: 100%;
     background-color: #000; /* Solid fallback while image loads */
-    background-image: url('/background.jpg');
+    background-image: url('/background.png');
     background-size: cover;
     background-position: center center;
     position: relative;

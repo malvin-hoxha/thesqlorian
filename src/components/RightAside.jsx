@@ -1,4 +1,4 @@
-import mnemaImage from '/yoda.svg';
+import mnemaImage from '/mnema.png';
 
 const RightAside = ({tableIndex, tasks, table}) => {
   return (

@@ -1,6 +1,6 @@
 import { outroDialogues } from '../data/data';
-import meroxImage from '/darth-vader.svg';
-import mnemaImage from '/yoda.svg';
+import meroxImage from '/merox.png';
+import mnemaImage from '/mnema.png';
 import { useState, useRef, useEffect } from 'react';
 new Image().src = meroxImage;
 new Image().src = mnemaImage;

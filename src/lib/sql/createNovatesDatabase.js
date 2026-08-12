@@ -1,6 +1,6 @@
-import padawans from "../../data/table.js";
+import novates from "../../data/table.js";
 
-export function createNovatesDatabase(SQL, rows = padawans) {
+export function createNovatesDatabase(SQL, rows = novates) {
   const database = new SQL.Database();
 
   database.run(`

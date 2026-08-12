@@ -60,12 +60,12 @@ const StoryIntro = () => {
 
   return (
     <section className="w-full min-h-screen bg-gradient-to-b text-white bg-black/50 backdrop-blur-sm">
-      <div className="fixed top-0 right-0 flex items-center z-51">
+      <div className="fixed top-0 right-0 flex items-center z-51 mt-2">
         <audio ref={audioRef} src="/music.mp3" loop/>
         <div>
           <button
             onClick={toggleAudio}
-            className="text-black font-bold transition-all w-15 cursor-pointer"
+            className="text-black font-bold transition-all w-19 cursor-pointer"
           >
             {isPlaying ? <img src={pause_icon} alt="Pause Icon" className="inline"/> : <img src={play_icon} alt="Play Icon" className="inline"/>}
           </button>

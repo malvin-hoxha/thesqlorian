@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import mnemaImage from '/yoda.svg';
+import mnemaImage from '/mnema.png';
 
 const QuestsDialogues = ({ tasks, onContinue }) => {
   const buttonRef = useRef(null);
