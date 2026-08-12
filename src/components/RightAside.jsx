@@ -1,10 +1,10 @@
-import yoda from '/yoda.svg';
+import mnemaImage from '/mnema.png';
 
 const RightAside = ({tableIndex, tasks, table}) => {
   return (
     <div className="space-y-4">
         <div className="flex items-center space-x-3 mt-4 justify-center">
-            <img src={yoda} alt="yoda" className="w-10" />
+            <img src={mnemaImage} alt="Mnema" className="w-10" />
             <div>
                 <h1 className="text-center text-2xl">QUEST {tableIndex + 1}</h1>
                 <p className="text-amber-200 italic text-xl text-center">{`"${tasks.hint}"`}</p>
@@ -43,7 +43,7 @@ const RightAside = ({tableIndex, tasks, table}) => {
             </div>
             
             <div>
-                <h2 className="text-2xl font-semibold text-amber-400 mb-4">padawans table</h2>
+                <h2 className="text-2xl font-semibold text-amber-400 mb-4">novates table</h2>
                 <table className="w-full table-auto border-collapse text-sm">
                     <thead className="bg-zinc-700 text-amber-300">
                         <tr>

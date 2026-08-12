@@ -1,9 +1,9 @@
 import { outroDialogues } from '../data/data';
-import darthVader from '/darth-vader.svg';
-import yoda from '/yoda.svg';
+import meroxImage from '/merox.png';
+import mnemaImage from '/mnema.png';
 import { useState, useRef, useEffect } from 'react';
-new Image().src = darthVader;
-new Image().src = yoda;
+new Image().src = meroxImage;
+new Image().src = mnemaImage;
 
 const OutroDialogue = ({onClose}) => {
   const buttonRef = useRef(null);
@@ -36,10 +36,10 @@ const OutroDialogue = ({onClose}) => {
     <div className="fixed inset-0 flex items-center justify-center z-50 p-5">
       <div className="bg-zinc-900 border border-red-600 rounded-3xl shadow-xl p-8 max-w-xl w-full text-center space-y-4">
         <div className={`flex items-center justify-center
-            ${current.speaker === 'yoda' ? 'flex-row-reverse' : ''} gap-4`}>
+            ${current.speaker === 'mnema' ? 'flex-row-reverse' : ''} gap-4`}>
           <img
-              src={current.speaker === "vader" ? darthVader : yoda}
-              alt={current.speaker}
+              src={current.speaker === "merox" ? meroxImage : mnemaImage}
+              alt={current.speaker === "merox" ? "Custodian Merox" : "Mnema"}
               className="w-20"
           />
           <p className="text-lg font-light text-amber-100 italic">

@@ -27,29 +27,29 @@ describe("executeQueryOnFreshDatabase", () => {
     const rows = [
       {
         id: 1,
-        name: "Ahsoka",
-        species: "Togruta",
-        age: 17,
-        lightsaber_color: "Green",
+        name: "Nera",
+        species: "Human",
+        age: 19,
+        resonance_color: "Cyan",
       },
       {
         id: 2,
-        name: "Yoda",
-        species: "Unknown",
-        age: 900,
-        lightsaber_color: "Green",
+        name: "Praxen",
+        species: "Selyx",
+        age: 203,
+        resonance_color: "Cyan",
       },
     ];
 
     const result = executeQueryOnFreshDatabase(
       SQL,
-      "SELECT name FROM padawans WHERE age > 100;",
+      "SELECT name FROM novates WHERE age > 100;",
       rows,
     );
 
     expect(result).toEqual([
       {
-        name: "Yoda",
+        name: "Praxen",
       },
     ]);
   });
@@ -58,34 +58,34 @@ describe("executeQueryOnFreshDatabase", () => {
     const rows = [
       {
         id: 1,
-        name: "Yoda",
-        species: "Unknown",
-        age: 900,
-        lightsaber_color: "Green",
+        name: "Praxen",
+        species: "Selyx",
+        age: 203,
+        resonance_color: "Cyan",
       },
     ];
 
     const firstResult = executeQueryOnFreshDatabase(
       SQL,
-      "SELECT name FROM padawans;",
+      "SELECT name FROM novates;",
       rows,
     );
 
     const secondResult = executeQueryOnFreshDatabase(
       SQL,
-      "SELECT age FROM padawans;",
+      "SELECT age FROM novates;",
       rows,
     );
 
     expect(firstResult).toEqual([
       {
-        name: "Yoda",
+        name: "Praxen",
       },
     ]);
 
     expect(secondResult).toEqual([
       {
-        age: 900,
+        age: 203,
       },
     ]);
   });

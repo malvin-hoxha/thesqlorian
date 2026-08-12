@@ -6,8 +6,8 @@ export function formatSqlResult(resultSets) {
     const { columns, values } = resultSets[0];
     //columns: ["name", "age"]
     /*values: [
-    *       ["Yoda", 900],
-    *       ["Grogu", 50],
+    *       ["Nera", 19],
+    *       ["Nexa", 27],
     *   ],
     */  
 

@@ -5,13 +5,13 @@ import { compareSqlResults } from "../compareSqlResults.js";
 describe("compareSqlResults", () => {
   it("accepts identical result sets", () => {
     const actual = [
-      { name: "Yoda", age: 900 },
-      { name: "Grogu", age: 50 },
+      { name: "Praxen", age: 203 },
+      { name: "Nexa", age: 27 },
     ];
 
     const expected = [
-      { name: "Yoda", age: 900 },
-      { name: "Grogu", age: 50 },
+      { name: "Praxen", age: 203 },
+      { name: "Nexa", age: 27 },
     ];
 
     expect(compareSqlResults(actual, expected)).toBe(true);
@@ -19,12 +19,12 @@ describe("compareSqlResults", () => {
 
   it("rejects result sets with different row counts", () => {
     const actual = [
-      { name: "Yoda" },
+      { name: "Praxen" },
     ];
 
     const expected = [
-      { name: "Yoda" },
-      { name: "Grogu" },
+      { name: "Praxen" },
+      { name: "Nexa" },
     ];
 
     expect(compareSqlResults(actual, expected)).toBe(false);
@@ -32,11 +32,11 @@ describe("compareSqlResults", () => {
 
   it("rejects rows with different values", () => {
     const actual = [
-      { name: "Yoda", age: 800 },
+      { name: "Praxen", age: 146 },
     ];
 
     const expected = [
-      { name: "Yoda", age: 900 },
+      { name: "Praxen", age: 203 },
     ];
 
     expect(compareSqlResults(actual, expected)).toBe(false);
@@ -44,11 +44,11 @@ describe("compareSqlResults", () => {
 
   it("rejects rows with different columns", () => {
     const actual = [
-      { name: "Yoda" },
+      { name: "Praxen" },
     ];
 
     const expected = [
-      { species: "Yoda's Species" },
+      { species: "Selyx" },
     ];
 
     expect(compareSqlResults(actual, expected)).toBe(false);
@@ -56,13 +56,13 @@ describe("compareSqlResults", () => {
 
   it("currently treats row order as significant", () => {
     const actual = [
-      { name: "Grogu" },
-      { name: "Yoda" },
+      { name: "Nexa" },
+      { name: "Praxen" },
     ];
 
     const expected = [
-      { name: "Yoda" },
-      { name: "Grogu" },
+      { name: "Praxen" },
+      { name: "Nexa" },
     ];
 
     expect(compareSqlResults(actual, expected)).toBe(false);
@@ -74,13 +74,13 @@ describe("compareSqlResults", () => {
 
   it("can ignore row order when configured", () => {
     const actual = [
-      { name: "Grogu" },
-      { name: "Yoda" },
+      { name: "Nexa" },
+      { name: "Praxen" },
     ];
 
     const expected = [
-      { name: "Yoda" },
-      { name: "Grogu" },
+      { name: "Praxen" },
+      { name: "Nexa" },
     ];
 
     expect(
@@ -98,7 +98,7 @@ describe("compareSqlResults", () => {
 
     const expected = [
       { species: "Human" },
-      { species: "Kel Dor" },
+      { species: "Avren" },
     ];
 
     expect(
@@ -111,11 +111,11 @@ describe("compareSqlResults", () => {
 
   it("rejects different column names by default", () => {
     const actual = [
-      { padawan_name: "Yoda" },
+      { novate_name: "Praxen" },
     ];
 
     const expected = [
-      { name: "Yoda" },
+      { name: "Praxen" },
     ];
 
     expect(compareSqlResults(actual, expected)).toBe(false);
@@ -123,11 +123,11 @@ describe("compareSqlResults", () => {
 
   it("can ignore column names when configured", () => {
     const actual = [
-      { padawan_name: "Yoda" },
+      { novate_name: "Praxen" },
     ];
 
     const expected = [
-      { name: "Yoda" },
+      { name: "Praxen" },
     ];
 
     expect(
@@ -138,4 +138,3 @@ describe("compareSqlResults", () => {
   });
 
 });
-

@@ -22,9 +22,6 @@ const Credits = ({onClick}) => {
                 <li>
                     <span className="text-amber-300">Music</span> by Luis Humanoide from Pixabay
                 </li>
-                <li>
-                    <span className="text-amber-300">Icons</span> (Play, Pause, Yoda, Vader) by Icons8
-                </li>
             </ul>
 
             <div className="flex justify-end mt-6">
