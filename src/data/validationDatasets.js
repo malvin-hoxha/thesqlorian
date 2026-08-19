@@ -29,7 +29,7 @@ const validationDatasetA = [
   },
   {
     id: 5,
-    name: "Renor",
+    name: "Navo",
     species: "Orren",
     age: 100,
     resonance_color: "Amber",
@@ -83,12 +83,12 @@ const validationDatasetB = [
     id: 1,
     name: "Nema",
     species: "Human",
-    age: 20,
+    age: 30,
     resonance_color: "Cyan",
   },
   {
     id: 2,
-    name: "Nestor",
+    name: "Nexo",
     species: "Human",
     age: 20,
     resonance_color: "Cyan",
@@ -102,7 +102,7 @@ const validationDatasetB = [
   },
   {
     id: 4,
-    name: "Iren",
+    name: "Miro",
     species: "Myrin",
     age: 40,
     resonance_color: "Amber",
@@ -130,7 +130,7 @@ const validationDatasetB = [
   },
   {
     id: 8,
-    name: "Prenal",
+    name: "Corex",
     species: "Avren",
     age: 121,
     resonance_color: "Crimson",

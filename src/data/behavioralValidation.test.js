@@ -87,6 +87,13 @@ describe("Behavioral challenge validation", () => {
         "rejects a single-character pattern instead of a prefix pattern",
     },
     {
+      challengeId: 7,
+      userSql:
+        "SELECT name FROM novates WHERE name LIKE 'N%';",
+      description:
+        "rejects a broader first-letter prefix that only matches visible Ne names",
+    },
+    {
         challengeId: 8,
         userSql: `
             SELECT name
@@ -98,11 +105,25 @@ describe("Behavioral challenge validation", () => {
             "rejects an extra suffix condition that is invisible in the main dataset",
     },
     {
+      challengeId: 8,
+      userSql:
+        "SELECT name FROM novates WHERE name LIKE '%re_';",
+      description:
+        "rejects a wildcard suffix that only coincides with names ending in ren",
+    },
+    {
       challengeId: 9,
       userSql:
         "SELECT name FROM novates WHERE name LIKE 'Ne%';",
       description:
         "rejects a prefix pattern instead of an exact single-character pattern",
+    },
+    {
+      challengeId: 9,
+      userSql:
+        "SELECT name FROM novates WHERE name LIKE 'Ne__';",
+      description:
+        "rejects a two-character wildcard pattern that only coincides with Ne_a visibly",
     },
     {
       challengeId: 10,
@@ -112,11 +133,29 @@ describe("Behavioral challenge validation", () => {
         "rejects an any-length wildcard instead of one leading character",
     },
     {
+      challengeId: 10,
+      userSql:
+        "SELECT name FROM novates WHERE name LIKE '_ir_';",
+      description:
+        "rejects a wildcard final character when visible matches all end in a",
+    },
+    {
       challengeId: 11,
       userSql:
         "SELECT AVG(DISTINCT age) AS average_age FROM novates;",
       description:
         "rejects AVG DISTINCT when duplicate ages reveal different behavior",
+    },
+    {
+      challengeId: 13,
+      userSql: `
+        SELECT age
+        FROM novates
+        ORDER BY id ASC
+        LIMIT 1;
+      `,
+      description:
+        "rejects selecting the first id age when it only coincides with the minimum visibly",
     },
     {
       challengeId: 14,
