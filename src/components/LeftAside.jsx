@@ -7,7 +7,8 @@ import { evaluateQuery } from "../lib/sql/evaluateQuery.js";
 import validationDatasets from "../data/validationDatasets.js";
 
 
-const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameResetTrigger}) => {
+const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameResetTrigger, 
+    isChallengeCompleted, onChallengeCompleted}) => {
 
     const [userSQLMap, setUserSQLMap] = useState({});
     const [isCorrect, setIsCorrect] = useState(null);
@@ -42,7 +43,6 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
 
       const handleRunSQL = () => {
         try {
-
             const statementValidation = validateSqlStatement(userSQL);
 
             if(!statementValidation.valid) {
@@ -79,10 +79,14 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
             setQueryError("");
             setIsCorrect(evaluation.correct);
 
-            if (evaluation.correct && tableIndex === data.length - 1) {
-                setTimeout(() => {
-                    onCompleteLastTask();
-                }, 1500);
+            if (evaluation.correct) {
+                onChallengeCompleted(tableIndex);
+
+                if (tableIndex === data.length - 1) {
+                    setTimeout(() => {
+                        onCompleteLastTask();
+                    }, 1500);
+                }
             }
         } catch {
             setUserResult([]);
@@ -90,6 +94,8 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
             setIsCorrect(false);
         }
     };
+
+    const canGoNext = isCorrect === true || isChallengeCompleted;
 
 
     return (
@@ -115,17 +121,17 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                 </button>
 
                 <button
-                    disabled={!isCorrect}
-                    onClick={() => ChangePage('next')}
+                    disabled={!canGoNext}
+                    onClick={() => ChangePage("next")}
                     className={`px-5 py-2  text-white font-semibold rounded-xl shadow-lg
                         transition-all duration-200
-                        ${!isCorrect ? 'bg-red-900 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 cursor-pointer'} `}
+                        ${!canGoNext ? 'bg-red-900 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 cursor-pointer'} `}
                 >
                     Next
                 </button>
 
                 <button
-                    onClick={() => ChangePage('previous')}
+                    onClick={() => ChangePage("previous")}
                     className="px-5 py-2 bg-blue-600 text-white font-semibold rounded-xl shadow-lg
                         hover:bg-blue-700 transition-all duration-200 cursor-pointer"
                 >
