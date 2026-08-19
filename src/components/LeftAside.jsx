@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import initSqlJs from 'sql.js';
+import sqlWasmUrl from "sql.js/dist/sql-wasm.wasm?url";
 
 import data from '../data/data';
 import { validateSqlStatement } from "../lib/sql/validateSqlStatement.js";
@@ -35,7 +36,7 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
 
     useEffect(() => {
         async function initializeSqlModule() {
-            const SQL = await initSqlJs({ locateFile: file => `https://sql.js.org/dist/${file}` });
+            const SQL = await initSqlJs({ locateFile: () => sqlWasmUrl });
             setSqlModule(SQL);
         }
         initializeSqlModule();
