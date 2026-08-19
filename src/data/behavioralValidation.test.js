@@ -36,6 +36,50 @@ describe("Behavioral challenge validation", () => {
         "rejects an incorrect age threshold that matches the visible result",
     },
     {
+      challengeId: 3,
+      userSql: `
+        SELECT name
+        FROM novates
+        WHERE resonance_color = 'Cyan'
+          AND age < 40;
+      `,
+      description:
+        "rejects an age condition that only coincides with Human Cyan on visible data",
+    },
+    {
+      challengeId: 3,
+      userSql: `
+        SELECT name
+        FROM novates
+        WHERE species = 'Human'
+          AND name LIKE 'Ne%';
+      `,
+      description:
+        "rejects a name-prefix condition that only coincides with Human Cyan on visible data",
+    },
+    {
+      challengeId: 3,
+      userSql: `
+        SELECT name
+        FROM novates
+        WHERE resonance_color = 'Cyan'
+          AND name LIKE 'Ne%';
+      `,
+      description:
+        "rejects a name-prefix substitute for the Human condition",
+    },
+    {
+      challengeId: 4,
+      userSql: `
+        SELECT name
+        FROM novates
+        WHERE species IN ('Avren', 'Myrin')
+          AND resonance_color != 'None';
+      `,
+      description:
+        "rejects an extra resonance condition hidden by the visible species data",
+    },
+    {
       challengeId: 7,
       userSql:
         "SELECT name FROM novates WHERE name LIKE 'Ne_a';",
@@ -94,6 +138,17 @@ describe("Behavioral challenge validation", () => {
         "SELECT name FROM novates WHERE name LIKE 'Ora%';",
       description:
         "rejects a prefix pattern that only happens to match the visible result",
+    },
+    {
+      challengeId: 19,
+      userSql: `
+        SELECT name
+        FROM novates
+        WHERE resonance_color = 'None'
+          AND species != 'Selyx';
+      `,
+      description:
+        "rejects an extra species condition hidden by the visible None rows",
     },
   ];
 

@@ -11,7 +11,7 @@ const validationDatasetA = [
     name: "Nexara",
     species: "Avren",
     age: 40,
-    resonance_color: "Amber",
+    resonance_color: "None",
   },
   {
     id: 3,
@@ -46,7 +46,7 @@ const validationDatasetA = [
     name: "Alira",
     species: "Human",
     age: 145,
-    resonance_color: "None",
+    resonance_color: "Cyan",
   },
   {
     id: 8,
@@ -126,7 +126,7 @@ const validationDatasetB = [
     name: "Cyral",
     species: "Selyx",
     age: 120,
-    resonance_color: "Cyan",
+    resonance_color: "None",
   },
   {
     id: 8,
