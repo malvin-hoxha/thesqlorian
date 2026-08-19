@@ -4,6 +4,7 @@ import initSqlJs from 'sql.js';
 import data from '../data/data';
 import { validateSqlStatement } from "../lib/sql/validateSqlStatement.js";
 import { evaluateQuery } from "../lib/sql/evaluateQuery.js";
+import validationDatasets from "../data/validationDatasets.js";
 
 
 const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameResetTrigger}) => {
@@ -62,6 +63,7 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                 SQL: sqlModule,
                 userSql: userSQL,
                 expectedSql: tasks.expected_sql,
+                hiddenDatasets: validationDatasets,
                 orderSensitive: tasks.orderSensitive ?? false,
                 columnNamesSensitive: false
             });
