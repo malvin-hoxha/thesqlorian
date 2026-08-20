@@ -60,11 +60,3 @@ export function compareSqlResults(actualRows, expectedRows, options = {}) {
         return true;
     });
 }
-
-/* To be equal
-*   1. ίδιο αριθμό γραμμών,
-*   2. ίδιες στήλες,
-*   3. ίδια σειρά στηλών,
-*   4. ίδιες τιμές,
-*   5. ίδια σειρά γραμμών.   
-*/
