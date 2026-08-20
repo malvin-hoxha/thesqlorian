@@ -14,7 +14,11 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
     const [userSQLMap, setUserSQLMap] = useState({});
     const [isCorrect, setIsCorrect] = useState(null);
 
-    const [sqlModule, setSqlModule] = useState(null);
+    const [sqlEngine, setSqlEngine] = useState({
+        status: "loading",
+        module: null,
+    });
+
     const [userSQL, setUserSQL] = useState("");
     const [userResult, setUserResult] = useState([]);
     const [queryError, setQueryError] = useState("");
@@ -36,13 +40,26 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
 
     useEffect(() => {
         async function initializeSqlModule() {
-            const SQL = await initSqlJs({ locateFile: () => sqlWasmUrl });
-            setSqlModule(SQL);
+            try {
+                const SQL = await initSqlJs({ locateFile: () => sqlWasmUrl });
+                setSqlEngine({status: "ready", module: SQL});
+            } catch {
+                setSqlEngine({
+                    status: "error", 
+                    module: null
+                })   
+            }
+           
         }
         initializeSqlModule();
     },[]);
 
       const handleRunSQL = () => {
+
+        if (sqlEngine.status !== "ready") {
+            return;
+        }
+
         try {
             const statementValidation = validateSqlStatement(userSQL);
 
@@ -53,15 +70,8 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                 return;
             }
 
-            if (!sqlModule) {
-                setQueryError("SQL engine is still loading.");
-                setUserResult([]);
-                setIsCorrect(false);
-                return;
-            }
-
             const evaluation = evaluateQuery({
-                SQL: sqlModule,
+                SQL: sqlEngine.module,
                 userSql: userSQL,
                 expectedSql: tasks.expected_sql,
                 hiddenDatasets: validationDatasets,
@@ -116,9 +126,21 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
 
             <div className='flex items-center sm:gap-4 gap-2'>
                 <button
+                    disabled={sqlEngine.status !== "ready"}
                     onClick={handleRunSQL}
-                    className="px-5 py-2 bg-amber-500 hover:bg-amber-600 transition-all text-black font-bold rounded-xl shadow cursor-pointer">
-                    Run Query
+                    className={`px-5 py-2 transition-all text-black font-bold rounded-xl shadow
+                        ${
+                            sqlEngine.status === "ready"
+                                ? "bg-amber-500 hover:bg-amber-600 cursor-pointer"
+                                : "bg-amber-900 cursor-not-allowed"
+                        }`}
+                >
+                    {sqlEngine.status === "loading"
+                        ? "Loading SQL..."
+                        : sqlEngine.status === "error"
+                            ? "SQL Unavailable"
+                            : "Run Query"
+                    }
                 </button>
 
                 <button
@@ -157,6 +179,11 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
             </div>
 
             {queryError && <p className="text-red-400 italic">{queryError}</p>}
+            {sqlEngine.status === "error" && (
+                <p className="text-red-400 italic">
+                    SQL engine failed to load. Refresh to try again.
+                </p>
+            )}
 
             {userResult.length > 0 && (
                 <div className="mt-6">
