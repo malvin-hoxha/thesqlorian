@@ -110,6 +110,7 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
     };
 
     const canGoNext = isCorrect === true || isChallengeCompleted;
+    const canGoPrevious = tableIndex > 0;
 
     const handleNext = () => {
         if (!canGoNext) {
@@ -124,11 +125,23 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
         ChangePage("next");
     };
 
+    const handlePrevious = () => {
+        if (!canGoPrevious) {
+            return;
+        }
+
+        ChangePage("previous");
+    };
+
 
     return (
         <>
             <h2 className="text-2xl font-semibold text-amber-400">Command Console</h2>
+            <label htmlFor="sql-query" className="sr-only">
+                SQL query
+            </label>
             <textarea
+                id="sql-query"
                 value={userSQL}
                 onChange={(e) => {
                     const val = e.target.value;
@@ -140,11 +153,11 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                 placeholder="Enter your SQL command..."
             />
 
-            <div className='flex items-center sm:gap-4 gap-2'>
+            <div className='flex flex-wrap items-center sm:gap-4 gap-2'>
                 <button
                     disabled={sqlEngine.status !== "ready"}
                     onClick={handleRunSQL}
-                    className={`px-5 py-2 transition-all text-black font-bold rounded-xl shadow
+                    className={`px-4 sm:px-5 py-2 transition-all text-black font-bold rounded-xl shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300
                         ${
                             sqlEngine.status === "ready"
                                 ? "bg-amber-500 hover:bg-amber-600 cursor-pointer"
@@ -162,17 +175,19 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                 <button
                     disabled={!canGoNext}
                     onClick={handleNext}
-                    className={`px-5 py-2  text-white font-semibold rounded-xl shadow-lg
-                        transition-all duration-200
+                    className={`px-4 sm:px-5 py-2 text-white font-semibold rounded-xl shadow-lg
+                        transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300
                         ${!canGoNext ? 'bg-red-900 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 cursor-pointer'} `}
                 >
                     Next
                 </button>
 
                 <button
-                    onClick={() => ChangePage("previous")}
-                    className="px-5 py-2 bg-blue-600 text-white font-semibold rounded-xl shadow-lg
-                        hover:bg-blue-700 transition-all duration-200 cursor-pointer"
+                    disabled={!canGoPrevious}
+                    onClick={handlePrevious}
+                    className={`px-4 sm:px-5 py-2 text-white font-semibold rounded-xl shadow-lg
+                        transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300
+                        ${!canGoPrevious ? 'bg-blue-950 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 cursor-pointer'}`}
                 >
                     Previous
                 </button>
@@ -188,15 +203,19 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
 
             <div>
                 {isCorrect !== null && (
-                    <h1 className={`text-2xl font-bold ${isCorrect ? 'text-green-500' : 'text-red-500'} transition-all duration-300`}>
+                    <h1
+                        role="status"
+                        aria-live="polite"
+                        className={`text-2xl font-bold ${isCorrect ? 'text-green-500' : 'text-red-500'} transition-all duration-300`}
+                    >
                         {isCorrect ? 'CORRECT' : 'WRONG'}
                     </h1>
                 )}
             </div>
 
-            {queryError && <p className="text-red-400 italic">{queryError}</p>}
+            {queryError && <p role="alert" className="text-red-400 italic">{queryError}</p>}
             {sqlEngine.status === "error" && (
-                <p className="text-red-400 italic">
+                <p role="alert" className="text-red-400 italic">
                     SQL engine failed to load. Refresh to try again.
                 </p>
             )}
@@ -206,13 +225,14 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                     <h2 className="text-xl font-semibold text-amber-400 mb-2">Your Query Result</h2>
 
                     {userResult[0].error ? (
-                    <p className="text-red-400 italic">{userResult[0].error}</p>
+                    <p role="alert" className="text-red-400 italic">{userResult[0].error}</p>
                     ) : (
-                        <table className="w-full table-auto border-collapse text-sm">
+                        <div className="max-w-full overflow-x-auto">
+                        <table className="w-full min-w-max table-auto border-collapse text-sm">
                             <thead className="bg-zinc-700 text-amber-300">
                                 <tr>
                                     {Object.keys(userResult[0]).map((key) => (
-                                    <th key={key} className="border sm:py-2 border-zinc-600 sm:px-3">
+                                    <th key={key} scope="col" className="border sm:py-2 border-zinc-600 sm:px-3">
                                         {key}
                                     </th>
                                     ))}
@@ -230,6 +250,7 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
                             ))}
                             </tbody>
                         </table>
+                        </div>
                     )}
                 </div>
             )}

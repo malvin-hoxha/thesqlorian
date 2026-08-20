@@ -80,35 +80,39 @@ const StoryIntro = () => {
 
   const toggleAudio = () => {
     if (!audioRef.current) return;
-  
-    setIsPlaying((prev) => {
-      if (prev) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(() => {});
-      }
-      return !prev;
-    });
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+      return;
+    }
+
+    audioRef.current
+      .play()
+      .then(() => setIsPlaying(true))
+      .catch(() => setIsPlaying(false));
   };
   
 
   return (
     <section className="w-full min-h-screen bg-gradient-to-b text-white bg-black/50 backdrop-blur-sm">
-      <div className="fixed top-0 right-0 flex items-center z-51 mt-2">
+      <div className="fixed top-0 right-0 flex flex-wrap items-center justify-end gap-1 z-40 mt-2 max-w-full">
         <audio ref={audioRef} src="/music.mp3" loop/>
         <div>
           <button
             onClick={toggleAudio}
-            className="text-black font-bold transition-all w-19 cursor-pointer"
+            aria-label={isPlaying ? "Pause music" : "Play music"}
+            aria-pressed={isPlaying}
+            className="text-black font-bold transition-all w-19 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
           >
-            {isPlaying ? <img src={pause_icon} alt="Pause Icon" className="inline"/> : <img src={play_icon} alt="Play Icon" className="inline"/>}
+            {isPlaying ? <img src={pause_icon} alt="" className="inline"/> : <img src={play_icon} alt="" className="inline"/>}
           </button>
         </div>
 
         <div>
           <button
             onClick={() => setShowCredits(true)}
-            className="text-black font-bold bg-white/70 px-4 py-2 mr-2 rounded-lg shadow transition hover:bg-white cursor-pointer"
+            className="text-black font-bold bg-white/70 px-4 py-2 mr-2 rounded-lg shadow transition hover:bg-white cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
           >
             Credits
           </button>
@@ -125,7 +129,7 @@ const StoryIntro = () => {
       )}
 
       {!showStory && !showOutro && (
-        <main className="w-full min-h-screen flex flex-col lg:flex-row gap-4 p-6">
+        <main className="w-full min-h-screen flex flex-col lg:flex-row gap-4 p-3 pt-16 sm:p-6 lg:pt-6">
 
           {showQuestDialogue && (
             <QuestsDialogues 
@@ -135,7 +139,7 @@ const StoryIntro = () => {
           )}
           
           {/* Left Panel */}
-          <aside className="flex-1 bg-zinc-800 rounded-2xl p-6 shadow-lg space-y-4">
+          <aside className="flex-1 min-w-0 bg-zinc-800 rounded-2xl p-4 sm:p-6 shadow-lg space-y-4">
             <LeftAside
               tableIndex={tableIndex}
               tasks={tasks}
@@ -152,7 +156,7 @@ const StoryIntro = () => {
             />
           </aside>
 
-          <aside className="flex-1 bg-zinc-800 rounded-2xl p-6 shadow-lg">
+          <aside className="flex-1 min-w-0 bg-zinc-800 rounded-2xl p-4 sm:p-6 shadow-lg">
             <RightAside tableIndex={tableIndex} tasks={tasks} table={table}/>
           </aside>
         </main>
