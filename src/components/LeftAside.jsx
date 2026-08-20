@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import initSqlJs from 'sql.js';
 import sqlWasmUrl from "sql.js/dist/sql-wasm.wasm?url";
 
@@ -10,8 +10,6 @@ import validationDatasets from "../data/validationDatasets.js";
 
 const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameResetTrigger, 
     isChallengeCompleted, onChallengeCompleted}) => {
-
-    const completionTimeoutRef = useRef(null);
 
     const [userSQLMap, setUserSQLMap] = useState({});
     const [isCorrect, setIsCorrect] = useState(null);
@@ -65,15 +63,6 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
             cancelled = true;
         }
     },[]);
-
-    useEffect(() => {
-        return () => {
-            if (completionTimeoutRef.current !== null) {
-                clearTimeout(completionTimeoutRef.current);
-                completionTimeoutRef.current = null;
-            }
-        };
-    }, [tableIndex, gameResetTrigger]);
 
     const handleRunSQL = () => {
         if (sqlEngine.status !== "ready") {
