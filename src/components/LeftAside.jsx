@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import initSqlJs from 'sql.js';
 import sqlWasmUrl from "sql.js/dist/sql-wasm.wasm?url";
 
@@ -10,6 +10,8 @@ import validationDatasets from "../data/validationDatasets.js";
 
 const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameResetTrigger, 
     isChallengeCompleted, onChallengeCompleted}) => {
+
+    const completionTimeoutRef = useRef(null);
 
     const [userSQLMap, setUserSQLMap] = useState({});
     const [isCorrect, setIsCorrect] = useState(null);
@@ -39,23 +41,41 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
     }, [gameResetTrigger]);
 
     useEffect(() => {
+
+        let cancelled = false;
+
         async function initializeSqlModule() {
             try {
                 const SQL = await initSqlJs({ locateFile: () => sqlWasmUrl });
-                setSqlEngine({status: "ready", module: SQL});
+                if (!cancelled) {
+                    setSqlEngine({status: "ready", module: SQL});
+                }
             } catch {
-                setSqlEngine({
-                    status: "error", 
-                    module: null
-                })   
+                if (!cancelled) {
+                    setSqlEngine({
+                        status: "error", 
+                        module: null
+                    });
+                } 
             }
-           
         }
         initializeSqlModule();
+
+        return () => {
+            cancelled = true;
+        }
     },[]);
 
-      const handleRunSQL = () => {
+    useEffect(() => {
+        return () => {
+            if (completionTimeoutRef.current !== null) {
+                clearTimeout(completionTimeoutRef.current);
+                completionTimeoutRef.current = null;
+            }
+        };
+    }, [tableIndex, gameResetTrigger]);
 
+    const handleRunSQL = () => {
         if (sqlEngine.status !== "ready") {
             return;
         }
@@ -92,12 +112,6 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
 
             if (evaluation.correct) {
                 onChallengeCompleted(tableIndex);
-
-                if (tableIndex === data.length - 1) {
-                    setTimeout(() => {
-                        onCompleteLastTask();
-                    }, 1500);
-                }
             }
         } catch {
             setUserResult([]);
@@ -107,6 +121,19 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
     };
 
     const canGoNext = isCorrect === true || isChallengeCompleted;
+
+    const handleNext = () => {
+        if (!canGoNext) {
+            return;
+        }
+
+        if (tableIndex === data.length - 1) {
+            onCompleteLastTask();
+            return;
+        }
+
+        ChangePage("next");
+    };
 
 
     return (
@@ -145,7 +172,7 @@ const LeftAside = ({tableIndex, tasks, ChangePage, onCompleteLastTask, gameReset
 
                 <button
                     disabled={!canGoNext}
-                    onClick={() => ChangePage("next")}
+                    onClick={handleNext}
                     className={`px-5 py-2  text-white font-semibold rounded-xl shadow-lg
                         transition-all duration-200
                         ${!canGoNext ? 'bg-red-900 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 cursor-pointer'} `}
