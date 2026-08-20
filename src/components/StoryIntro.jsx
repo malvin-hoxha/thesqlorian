@@ -12,6 +12,14 @@ import OutroDialogue from "./OutroDialogue";
 
 import Credits from "./Credits";
 
+import {
+  createDefaultProgress,
+  loadProgress,
+  markChallengeCompleted,
+  resetProgress,
+  saveProgress,
+} from "../lib/progressStorage.js";
+
 const StoryIntro = () => {
   const [showStory, setShowStory] = useState(() => {
     const hasSeenStory = localStorage.getItem('hasSeenStory');
@@ -20,7 +28,10 @@ const StoryIntro = () => {
 
   const [showOutro, setShowOutro] = useState(false);
 
-  const [tableIndex, setTableIndex] = useState(0);
+  const [progress, setProgress] = useState(() => loadProgress(data.length));
+
+  const tableIndex = progress.currentChallengeIndex;
+
   const [showQuestDialogue, setShowQuestDialogue] = useState(true);
   const tasks = data[tableIndex];  
   const [showCredits, setShowCredits] = useState(false);
@@ -29,13 +40,36 @@ const StoryIntro = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
+  const persistProgress = (nextProgress) => {
+    const savedProgress = saveProgress(nextProgress, data.length);
+    setProgress(savedProgress);
+  };
+
   const ChangePage = (direction) => {
-    setTableIndex(prevIndex => {
-      if (direction === 'next') return prevIndex < data.length - 1 ? prevIndex + 1 : prevIndex;
-      else if (direction === 'previous') return prevIndex > 0 ? prevIndex - 1 : prevIndex;
-      return prevIndex;
+    let nextIndex = tableIndex;
+
+    if (direction === 'next' && tableIndex < data.length - 1) {
+      nextIndex = tableIndex + 1;
+    } else if (direction === 'previous' && tableIndex > 0) {
+      nextIndex = tableIndex -1;
+    }
+
+    persistProgress({
+      ...progress,
+      currentChallengeIndex: nextIndex
     });
+
     setShowQuestDialogue(true);
+  }
+
+  const handleChallengeCompleted = (challengeIndex) => {
+    const nextProgress = markChallengeCompleted(
+      progress,
+      challengeIndex,
+      data.length,
+    );
+
+    persistProgress(nextProgress);
   }
 
   useEffect(() => {
@@ -111,6 +145,10 @@ const StoryIntro = () => {
                 setShowStory(false);
               }}
               gameResetTrigger={gameResetTrigger}
+              isChallengeCompleted={
+                progress.completedChallengeIndexes.includes(tableIndex)
+              }
+              onChallengeCompleted={handleChallengeCompleted}
             />
           </aside>
 
@@ -123,7 +161,10 @@ const StoryIntro = () => {
         <OutroDialogue
           onClose={() => {
             setShowOutro(false);
-            setTableIndex(0);
+            
+            resetProgress();
+            setProgress(createDefaultProgress());
+
             setShowQuestDialogue(true);
             setGameResetTrigger(prev => !prev);
           }}
