@@ -409,9 +409,9 @@ Project-specific visual assets and third-party media licensing boundaries are do
 
 ## Live Demo
 
-A public live demo will be added with the production deployment.
+**[Play TheSQLorian](https://malvin-hoxha.github.io/thesqlorian/)**
 
-Until then, the project can be run locally using the instructions above.
+TheSQLorian runs entirely in the browser. No account, backend, or database setup is required.
 
 ## Author
 
