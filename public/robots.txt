@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://malvin-hoxha.github.io/thesqlorian/sitemap.xml
